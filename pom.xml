@@ -83,7 +83,6 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -98,5 +97,13 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<properties>
+				<!-- Puedes definir propiedades específicas para builds en OpenShift -->
+				<env>openshift</env>
+			</properties>
+		</profile>
+	</profiles>
 </project>
