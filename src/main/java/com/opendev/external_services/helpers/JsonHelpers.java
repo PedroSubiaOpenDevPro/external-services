@@ -1,6 +1,7 @@
 package com.opendev.external_services.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -18,7 +19,16 @@ public class JsonHelpers {
             JsonNode jsonNode = objectMapper.readTree(jsonAsString);
             return jsonNode.get(fieldName).asText();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static Map<String, Object> parseStringToMap(String cadena){
+        try {
+            return objectMapper.readValue(cadena, new TypeReference<>() {});
+        } catch (Exception e) {
+            // return Mono.error(new RuntimeException("Error al parsear la respuesta JSON", e));
+            throw new RuntimeException(e.getMessage());
         }
     }
 
