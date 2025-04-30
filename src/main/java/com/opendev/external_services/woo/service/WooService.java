@@ -37,7 +37,7 @@ public class WooService {
         }
         return andreaniService.getLogin(credencial)
                 .flatMap(loginAndreaniResponse ->
-                        distribuidorService.getLogin(DISTRIBUIDOR_CREDENTIALS_WOO)
+                        distribuidorService.getLogin(CREDENCIALES_WOO)
                                 .flatMap(loginDistribuidorResponse -> {
                                     String tokenDistribuidor = extractValue(loginDistribuidorResponse.getBody(), "token");
                                     return distribuidorService.callIntegracionRestRR(pathIntegration, tokenDistribuidor, body);

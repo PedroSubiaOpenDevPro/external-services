@@ -13,12 +13,12 @@ public class MaestrosConstants {
     private String baseUrl;
     private String credencialesMaestros;
 
-    public static String BASE_URL;
+    public static String MAESTROS_BASE_URL;
     public static String CREDENCIALES_MAESTROS;
 
     @PostConstruct
     private void init() {
-        BASE_URL = baseUrl;
+        MAESTROS_BASE_URL = baseUrl;
         CREDENCIALES_MAESTROS = credencialesMaestros;
     }
 

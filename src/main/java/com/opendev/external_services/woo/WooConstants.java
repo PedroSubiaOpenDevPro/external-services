@@ -12,10 +12,10 @@ public class WooConstants {
 
     private String credencialesWoo;
 
-    public static String DISTRIBUIDOR_CREDENTIALS_WOO;
+    public static String CREDENCIALES_WOO;
 
     @PostConstruct
     private void init() {
-        DISTRIBUIDOR_CREDENTIALS_WOO = credencialesWoo;
+        CREDENCIALES_WOO = credencialesWoo;
     }
 }
