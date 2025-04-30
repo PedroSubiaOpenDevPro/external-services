@@ -22,6 +22,7 @@ public class LoggingWebClient {
         return ExchangeFilterFunction.ofRequestProcessor(req -> {
             // loguear método, URL, headers si querés
             log.info("WebClient Outgoing Request => {} {}", req.method(), req.url());
+            log.info("Headers {}", req.headers().toString());
             return Mono.just(req);
         });
     }

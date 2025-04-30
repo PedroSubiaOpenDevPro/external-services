@@ -11,6 +11,8 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.opendev.external_services.helpers.StringHelpers.borrarSaltosLineaYTabulaciones;
+
 @Component
 @Slf4j
 public class LoggingWebFilter implements WebFilter {
@@ -34,7 +36,7 @@ public class LoggingWebFilter implements WebFilter {
             byte[] bodyContent = new byte[dataBuffer.readableByteCount()];
             dataBuffer.read(bodyContent);
             DataBufferUtils.release(dataBuffer);
-            String requestBody = (new String(bodyContent, StandardCharsets.UTF_8)).replaceAll("\\n", "").replaceAll("\\t", "");
+            String requestBody = borrarSaltosLineaYTabulaciones(new String(bodyContent, StandardCharsets.UTF_8));
             log.info("App Incoming Request => {} {} Body: {}", request.getMethod(), request.getPath(), requestBody);
             ServerHttpRequest mutatedRequest = createMutatedRequest(request, bodyContent);
             ServerHttpResponse mutatedResponse = createMutatedResponse(response, request);
@@ -70,7 +72,7 @@ public class LoggingWebFilter implements WebFilter {
                             byte[] content = new byte[joined.readableByteCount()];
                             joined.read(content);
                             DataBufferUtils.release(joined);
-                            String responseBody = new String(content, StandardCharsets.UTF_8);
+                            String responseBody = borrarSaltosLineaYTabulaciones(new String(content, StandardCharsets.UTF_8));
                             log.info("App Outgoing Response => {} {} Status: {} Body: {}",
                                     request.getMethod(), request.getPath(), getStatusCode(), responseBody);
                             return getDelegate().writeWith(Mono.just(bufferFactory.wrap(content)));

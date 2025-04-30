@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.opendev.external_services.exceptions.ExternalApiException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -21,6 +23,15 @@ public class WebClientHelper {
     public Mono<ResponseEntity<String>> executeGetRequest(String path, Map<String, String> headers) {
         return webClient.get()
                 .uri(path)
+                .headers(httpHeaders -> httpHeaders.setAll(headers))
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::handleErrorResponse)
+                .toEntity(String.class);
+    }
+
+    public Mono<ResponseEntity<String>> executeGetRequestWithQueryParams(String path, MultiValueMap<String, String> queryParams, Map<String, String> headers) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder.path(path).queryParams(queryParams).build())
                 .headers(httpHeaders -> httpHeaders.setAll(headers))
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleErrorResponse)

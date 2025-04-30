@@ -1,6 +1,5 @@
 package com.opendev.external_services.woo.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.opendev.external_services.andreani.service.AndreaniService;
 import com.opendev.external_services.distribuidor.services.DistribuidorService;
@@ -11,7 +10,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-import static com.opendev.external_services.helpers.FuntionsHandlerJsonHelper.extractValue;
+import static com.opendev.external_services.helpers.JsonHelpers.buildJsonFromMap;
+import static com.opendev.external_services.helpers.JsonHelpers.extractValue;
 import static com.opendev.external_services.woo.WooConstants.*;
 
 @Service
@@ -32,19 +32,15 @@ public class WooService {
     public Mono<ResponseEntity<String>> executeIntegration(String integracion, String credencial, JsonNode body) {
         String pathIntegration = listIntegrationsNames.get(integracion);
         if (pathIntegration == null) {
-            return Mono.just(ResponseEntity.internalServerError()
-                    .body("{ \"message\": \"error Interno del servidor\", \"status\": 500 }"));
+            String msgError = buildJsonFromMap(Map.of("status", "500", "message", "error interno del servidor")).asText();
+            return Mono.just(ResponseEntity.internalServerError().body(msgError));
         }
         return andreaniService.getLogin(credencial)
                 .flatMap(loginAndreaniResponse ->
                         distribuidorService.getLogin(DISTRIBUIDOR_CREDENTIALS_WOO)
                                 .flatMap(loginDistribuidorResponse -> {
-                                    try {
-                                        String tokenDistribuidor = extractValue(loginDistribuidorResponse.getBody(), "token");
-                                        return distribuidorService.callIntegracionRestRR(pathIntegration, tokenDistribuidor, body);
-                                    } catch (JsonProcessingException e) {
-                                        throw new RuntimeException("Hubo un error");
-                                    }
+                                    String tokenDistribuidor = extractValue(loginDistribuidorResponse.getBody(), "token");
+                                    return distribuidorService.callIntegracionRestRR(pathIntegration, tokenDistribuidor, body);
                                 })
                 );
     }
