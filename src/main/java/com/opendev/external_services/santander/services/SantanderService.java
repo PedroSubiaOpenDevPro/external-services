@@ -19,7 +19,7 @@ public class SantanderService {
     DistribuidorService distribuidorService;
 
     public Mono<ResponseEntity<String>> postCallDistributor(String integracion, String ip, JsonNode body) {
-        String[] allowedIps = System.getenv("URL_PERMITED").split(",");
+        String[] allowedIps = URL_PERMITED.split(",");
         boolean ipAllowed = Arrays.asList(allowedIps).contains(ip);
 
         if (!ipAllowed) {

@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component;
 public class SantanderConstants {
 
     private String credencialesSantander;
+    private String url_permited;
 
     public static String DISTRIBUIDOR_CREDENTIALS_SANTANDER;
-
+    public static String URL_PERMITED;
     public static String ALTA_PAQUETES = "santander_altaDePaquetes";
 
     @PostConstruct
     private void init() {
         DISTRIBUIDOR_CREDENTIALS_SANTANDER = credencialesSantander;
+        URL_PERMITED = url_permited;
     }
 }

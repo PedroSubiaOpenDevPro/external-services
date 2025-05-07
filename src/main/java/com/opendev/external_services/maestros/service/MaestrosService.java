@@ -33,6 +33,10 @@ public class MaestrosService {
         return webClientHelper.executeGetRequestWithQueryParams("/" + nombreMaestros, queryParams, Map.of());
     }
 
+    public Mono<ResponseEntity<String>> getMaestrosWithoutParams(String nombreMaestros) {
+        return webClientHelper.executeGetRequest("/" + nombreMaestros, getDefaultHeaders().toSingleValueMap());
+    }
+
     private HttpHeaders getDefaultHeaders(){
         return new HttpHeaders() {{
             add("Content-Type", "application/json");
