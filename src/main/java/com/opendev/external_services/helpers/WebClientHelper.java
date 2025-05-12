@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-@Component
 public class WebClientHelper {
 
     private final WebClient webClient;

@@ -5,6 +5,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +25,7 @@ public class MaestrosService {
 
         this.webClientHelper = new WebClientHelper(webClientBuilder
                 // para pruebas en local host descomentar la linea ".clientConnector"
-                // .clientConnector(new ReactorClientHttpConnector(getInsecureHttpClient()))
+                 .clientConnector(new ReactorClientHttpConnector(getInsecureHttpClient()))
                 .defaultHeaders(httpHeaders -> httpHeaders.addAll(getDefaultHeaders()))
                 , MAESTROS_BASE_URL);
     }
